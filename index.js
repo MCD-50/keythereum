@@ -255,7 +255,7 @@ module.exports = {
           password.toString("utf8"),
           sjcl.codec.hex.toBits(salt.toString("hex")),
           options.kdfparams.c || self.constants.pbkdf2.c,
-          (options.kdfparams.dklen || self.constants.pbkdf2.dklen)*8
+          (options.kdfparams.dklen || self.constants.pbkdf2.dklen) * 8
         )), "hex");
       }
       return this.crypto.pbkdf2Sync(
@@ -272,7 +272,7 @@ module.exports = {
           password.toString("utf8"),
           sjcl.codec.hex.toBits(salt.toString("hex")),
           options.kdfparams.c || self.constants.pbkdf2.c,
-          (options.kdfparams.dklen || self.constants.pbkdf2.dklen)*8
+          (options.kdfparams.dklen || self.constants.pbkdf2.dklen) * 8
         )), "hex"));
       }, 0);
     } else {
@@ -529,9 +529,11 @@ module.exports = {
       }
       return filepath;
     }
-
+ 
     datadir = datadir || path.join(process.env.HOME, ".ethereum");
-    keystore = path.join(datadir, "keystore");
+    if (datadir === path.join(process.env.HOME, ".ethereum")) {
+      keystore = path.join(datadir, "keystore");
+    }
     if (!isFunction(cb)) {
       filepath = findKeyfile(keystore, address, fs.readdirSync(keystore));
       if (!filepath) {
