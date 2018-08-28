@@ -508,7 +508,7 @@ module.exports = {
    * @param {function=} cb Callback function (optional).
    * @return {Object} Keystore data file's contents.
    */
-  importFromFile: function (address, datadir, cb) {
+  importFromFile: function (address, datadir, cb, keysFolder = "keystore") {
     var keystore, filepath, path, fs;
     if (this.browser) throw new Error("method only available in Node.js");
     path = require("path");
@@ -529,11 +529,14 @@ module.exports = {
       }
       return filepath;
     }
- 
+
     datadir = datadir || path.join(process.env.HOME, ".ethereum");
-    if (datadir === path.join(process.env.HOME, ".ethereum")) {
-      keystore = path.join(datadir, "keystore");
+    if (keysFolder === null) {
+      keystore = path.join(datadir, "");
+    } else {
+      keystore = path.join(datadir, keysFolder);
     }
+
     if (!isFunction(cb)) {
       filepath = findKeyfile(keystore, address, fs.readdirSync(keystore));
       if (!filepath) {
